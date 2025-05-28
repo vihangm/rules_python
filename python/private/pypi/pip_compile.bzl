@@ -94,13 +94,14 @@ def pip_compile(
     # "Default" target produced by this macro
     # Allow a compile_pip_requirements rule to include another one in the data
     # for a requirements file that does `-r ../other/requirements.txt`
+    data = kwargs.pop("data", [])
     native.filegroup(
         name = name,
-        srcs = kwargs.pop("data", []) + [requirements_txt],
+        srcs = data + [requirements_txt],
         visibility = visibility,
     )
 
-    data = [name, requirements_txt] + srcs + [f for f in (requirements_linux, requirements_darwin, requirements_windows) if f != None]
+    data = [name, requirements_txt] + srcs + data + [f for f in (requirements_linux, requirements_darwin, requirements_windows) if f != None]
 
     # Use the Label constructor so this is expanded in the context of the file
     # where it appears, which is to say, in @rules_python
