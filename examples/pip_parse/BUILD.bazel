@@ -57,8 +57,10 @@ py_console_script_binary(
 compile_pip_requirements(
     name = "requirements",
     src = "requirements.in",
+    data = ["constraints.txt"],
     requirements_txt = "requirements_lock.txt",
     requirements_windows = "requirements_windows.txt",
+    extra_args = ["--constraint=$(location constraints.txt)"],
 )
 
 # Test the use of all pip_parse utilities in a single py_test
